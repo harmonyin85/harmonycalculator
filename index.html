@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>하모니실용음악학원 할인계산기</title>
+    <title>🎵 하모니실용음악학원 - 수강료 계산기</title>
     <style>
         * {
             margin: 0;
@@ -21,14 +21,15 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: white;
             padding: 30px;
             text-align: center;
@@ -36,14 +37,13 @@
 
         .header h1 {
             font-size: 2.2em;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .header p {
-            font-size: 1.3em;
-            margin-bottom: 20px;
-            font-weight: 600;
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
         }
 
         .content {
@@ -51,258 +51,272 @@
         }
 
         .section {
-            margin-bottom: 30px;
-        }
-
-        .section h2 {
-            font-size: 1.4em;
-            margin-bottom: 15px;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .discount-info {
-            background: #f8f9fa;
+            margin-bottom: 25px;
+            background: #f8f9ff;
             border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
         }
 
-        .discount-rules {
-            font-size: 0.95em;
-            line-height: 1.6;
+        .section h3 {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
         }
 
-        .discount-rules div {
-            margin-bottom: 8px;
-            font-weight: 500;
+        .section h3::before {
+            margin-right: 10px;
+            font-size: 1.2em;
         }
 
-        .course-grid {
+        .class-options {
             display: grid;
-            gap: 15px;
+            gap: 12px;
         }
 
-        .course-item {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
+        .class-option {
+            background: white;
+            border: 2px solid #e1e8ed;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px 20px;
+            transition: all 0.3s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .class-option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .class-option.has-selection {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .class-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .class-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .class-price {
+            font-weight: 700;
+            color: #ff6b6b;
+            font-size: 0.95em;
+        }
+
+        .class-option.has-selection .class-price {
+            color: #fff;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        .quantity-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
             transition: all 0.3s ease;
         }
 
-        .course-info h3 {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
+        .quantity-btn:hover {
+            background: #5a67d8;
+            transform: scale(1.1);
         }
 
-        .course-price {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 5px;
+        .quantity-btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .course-desc {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .counter {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .counter-btn {
-            width: 35px;
-            height: 35px;
-            border: 2px solid #667eea;
-            background: white;
-            color: #667eea;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2em;
-            transition: all 0.2s ease;
-        }
-
-        .counter-btn:hover {
-            background: #667eea;
+        .class-option.has-selection .quantity-btn {
+            background: rgba(255, 255, 255, 0.3);
             color: white;
         }
 
-        .counter-value {
-            font-size: 1.3em;
-            font-weight: bold;
-            min-width: 20px;
+        .class-option.has-selection .quantity-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .quantity-display {
+            font-weight: 700;
+            font-size: 1.2em;
+            min-width: 25px;
             text-align: center;
         }
 
-        .discount-section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
-        }
-
-        .discount-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .discount-item:last-child {
-            border-bottom: none;
-        }
-
-        .discount-info-text h4 {
-            font-size: 1.1em;
-            font-weight: bold;
-            margin-bottom: 3px;
-        }
-
-        .discount-info-text p {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .discount-counter {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .discount-counter-btn {
-            width: 30px;
-            height: 30px;
-            border: 1px solid #667eea;
-            background: white;
-            color: #667eea;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1em;
-            font-weight: bold;
-        }
-
-        .discount-counter-btn:hover {
-            background: #667eea;
-            color: white;
-        }
-
-        .discount-counter-value {
-            font-size: 1.1em;
-            font-weight: bold;
-            min-width: 15px;
-            text-align: center;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
+        .discount-options {
+            display: grid;
             gap: 10px;
         }
 
-        .checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #667eea;
-            border-radius: 4px;
+        .discount-option {
+            background: white;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            padding: 12px 18px;
             cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            justify-content: center;
-            background: white;
-            transition: all 0.2s ease;
         }
 
-        .checkbox.checked {
-            background: #667eea;
+        .discount-option:hover {
+            border-color: #00b894;
+            transform: translateX(5px);
+        }
+
+        .discount-option.selected {
+            border-color: #00b894;
+            background: #00b894;
             color: white;
+            transform: translateX(5px);
         }
 
-        .result-section {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        .discount-option input[type="checkbox"] {
+            margin-right: 12px;
+            transform: scale(1.3);
+        }
+
+        .result {
+            background: linear-gradient(135deg, #00b894, #00a085);
             color: white;
             padding: 25px;
             border-radius: 15px;
+            text-align: center;
             margin-top: 20px;
         }
 
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .result h3 {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .result .total-price {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .result .monthly-price {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .result .quarterly-notice {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            border-radius: 8px;
             margin-bottom: 15px;
             font-size: 1.1em;
+            font-weight: 600;
         }
 
-        .result-item:last-child {
-            margin-bottom: 0;
+        .result .original-price {
+            font-size: 1.1em;
+            opacity: 0.8;
+            text-decoration: line-through;
+            margin-bottom: 5px;
         }
 
-        .final-amount {
-            border-top: 2px solid rgba(255,255,255,0.3);
-            padding-top: 15px;
-            margin-top: 15px;
-            font-size: 1.3em;
-            font-weight: bold;
+        .result .savings {
+            font-size: 1.2em;
+            color: #fdcb6e;
+            font-weight: 600;
         }
 
-        .breakdown {
-            background: rgba(255,255,255,0.1);
+        .class-summary {
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             padding: 15px;
-            margin-top: 15px;
+            margin-bottom: 15px;
+            text-align: left;
         }
 
-        .breakdown h4 {
+        .class-summary h4 {
             margin-bottom: 10px;
             font-size: 1.1em;
         }
 
-        .breakdown-item {
+        .class-summary-item {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-size: 0.95em;
         }
 
-        .breakdown-total {
-            border-top: 1px solid rgba(255,255,255,0.3);
-            padding-top: 8px;
-            margin-top: 8px;
-            font-weight: bold;
+        .tip {
+            background: linear-gradient(135deg, #fdcb6e, #f39c12);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
         }
 
         @media (max-width: 600px) {
             .container {
-                margin: 10px;
-            }
-            
-            .content {
-                padding: 20px;
+                margin: 0;
+                border-radius: 0;
             }
             
             .header h1 {
                 font-size: 1.8em;
             }
             
-            .header p {
-                font-size: 1.1em;
+            .content {
+                padding: 20px;
             }
+
+            .class-option {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .quantity-control {
+                margin-left: 0;
+                align-self: flex-end;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -310,283 +324,316 @@
     <div class="container">
         <div class="header">
             <h1>🎵 하모니실용음악학원</h1>
-            <p>할인 자동 계산기</p>
+            <div class="subtitle">수강료 계산기</div>
         </div>
         
         <div class="content">
             <div class="section">
-                <h2>💡 간단한 할인 공식</h2>
-                <div class="discount-info">
-                    <div class="discount-rules">
-                        <div>🎯 2과목 선택 = 15% 할인</div>
-                        <div>🎯 3과목 선택 = 25% 할인</div>
-                        <div>🎯 가족 수강 시 1인당 = 1만원 할인</div>
-                        <div>🎯 지인 등록 시 1인당 = 3만원 할인 (첫달)</div>
-                        <div>🎯 3개월 일괄결제 시 = 10% 추가 할인</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>📚 수업 선택</h2>
-                <div class="course-grid">
-                    <div class="course-item">
-                        <div class="course-info">
-                            <h3>입시반</h3>
-                            <div class="course-price">390,000원</div>
-                            <div class="course-desc">보컬, 악기, 화성학</div>
+                <h3 style="color: #667eea;">💡 간단한 할인 공식</h3>
+                <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 15px;">
+                    <div style="display: grid; gap: 15px; font-size: 1.05em;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                            <span>🏠 <strong>가족 할인</strong></span>
+                            <span style="color: #667eea; font-weight: bold;">-1만원 / 1개월</span>
                         </div>
-                        <div class="counter">
-                            <div class="counter-btn" onclick="changeCourse('entrance', -1)">-</div>
-                            <div class="counter-value" id="entrance-count">0</div>
-                            <div class="counter-btn" onclick="changeCourse('entrance', 1)">+</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                            <span>👥 <strong>지인 추천 할인</strong></span>
+                            <span style="color: #667eea; font-weight: bold;">-3만원 / 1개월 (첫달만)</span>
                         </div>
-                    </div>
-                    
-                    <div class="course-item">
-                        <div class="course-info">
-                            <h3>개인반</h3>
-                            <div class="course-price">180,000원</div>
-                            <div class="course-desc">1:1 맞춤 개인 레슨</div>
-                        </div>
-                        <div class="counter">
-                            <div class="counter-btn" onclick="changeCourse('private', -1)">-</div>
-                            <div class="counter-value" id="private-count">0</div>
-                            <div class="counter-btn" onclick="changeCourse('private', 1)">+</div>
-                        </div>
-                    </div>
-                    
-                    <div class="course-item">
-                        <div class="course-info">
-                            <h3>그룹반</h3>
-                            <div class="course-price">130,000원</div>
-                            <div class="course-desc">3명 이하 개별 수업</div>
-                        </div>
-                        <div class="counter">
-                            <div class="counter-btn" onclick="changeCourse('group', -1)">-</div>
-                            <div class="counter-value" id="group-count">0</div>
-                            <div class="counter-btn" onclick="changeCourse('group', 1)">+</div>
-                        </div>
-                    </div>
-                    
-                    <div class="course-item">
-                        <div class="course-info">
-                            <h3>듀엣/밴드반</h3>
-                            <div class="course-price">90,000원</div>
-                            <div class="course-desc">3명 이상 팀 수업</div>
-                        </div>
-                        <div class="counter">
-                            <div class="counter-btn" onclick="changeCourse('band', -1)">-</div>
-                            <div class="counter-value" id="band-count">0</div>
-                            <div class="counter-btn" onclick="changeCourse('band', 1)">+</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9ff; border-radius: 8px;">
+                            <span>📅 <strong>3개월 일괄결제 할인</strong></span>
+                            <span style="color: #667eea; font-weight: bold;">-10% 추가 할인</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="section">
-                <h2>💰 추가 할인</h2>
-                <div class="discount-section">
-                    <div class="discount-item">
-                        <div class="discount-info-text">
-                            <h4>가족 할인</h4>
-                            <p>1인당 10,000원 할인</p>
+                <h3 style="color: #667eea;">📚 수업 선택 (개수 설정 가능)</h3>
+                <div class="class-options">
+                    <div class="class-option" data-class="exam" data-price="250000">
+                        <div class="class-info">
+                            <div class="class-name">입시반</div>
+                            <div class="class-price">25만원 / 1개월</div>
                         </div>
-                        <div class="discount-counter">
-                            <div class="discount-counter-btn" onclick="changeDiscount('family', -1)">-</div>
-                            <div class="discount-counter-value" id="family-count">0</div>
-                            <div class="discount-counter-btn" onclick="changeDiscount('family', 1)">+</div>
-                        </div>
-                    </div>
-                    
-                    <div class="discount-item">
-                        <div class="discount-info-text">
-                            <h4>지인 추천 할인</h4>
-                            <p>1인당 30,000원 할인 (첫달)</p>
-                        </div>
-                        <div class="discount-counter">
-                            <div class="discount-counter-btn" onclick="changeDiscount('referral', -1)">-</div>
-                            <div class="discount-counter-value" id="referral-count">0</div>
-                            <div class="discount-counter-btn" onclick="changeDiscount('referral', 1)">+</div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('exam', -1)">−</button>
+                            <span class="quantity-display" id="exam-quantity">0</span>
+                            <button class="quantity-btn" onclick="changeQuantity('exam', 1)">+</button>
                         </div>
                     </div>
-                    
-                    <div class="discount-item">
-                        <div class="discount-info-text">
-                            <h4>3개월 일괄결제 할인</h4>
-                            <p>10% 추가 할인</p>
+
+                    <div class="class-option" data-class="private60" data-price="230000">
+                        <div class="class-info">
+                            <div class="class-name">개인반(60분)</div>
+                            <div class="class-price">23만원 / 1개월</div>
                         </div>
-                        <div class="checkbox-item">
-                            <div class="checkbox" id="bulk-checkbox" onclick="toggleBulkPayment()"></div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('private60', -1)">−</button>
+                            <span class="quantity-display" id="private60-quantity">0</span>
+                            <button class="quantity-btn" onclick="changeQuantity('private60', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="class-option" data-class="private30" data-price="180000">
+                        <div class="class-info">
+                            <div class="class-name">개인반(30분)</div>
+                            <div class="class-price">18만원 / 1개월</div>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('private30', -1)">−</button>
+                            <span class="quantity-display" id="private30-quantity">0</span>
+                            <button class="quantity-btn" onclick="changeQuantity('private30', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="class-option" data-class="group" data-price="120000">
+                        <div class="class-info">
+                            <div class="class-name">그룹반</div>
+                            <div class="class-price">12만원 / 1개월</div>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('group', -1)">−</button>
+                            <span class="quantity-display" id="group-quantity">0</span>
+                            <button class="quantity-btn" onclick="changeQuantity('group', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="class-option" data-class="duet" data-price="150000">
+                        <div class="class-info">
+                            <div class="class-name">듀엣/밴드반</div>
+                            <div class="class-price">15만원 / 1개월</div>
+                        </div>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="changeQuantity('duet', -1)">−</button>
+                            <span class="quantity-display" id="duet-quantity">0</span>
+                            <button class="quantity-btn" onclick="changeQuantity('duet', 1)">+</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="result-section">
-                <h2>💳 최종 결제 금액</h2>
-                
-                <div class="result-item">
-                    <span>원래 금액</span>
-                    <span id="original-amount">0원</span>
-                </div>
-                
-                <div class="result-item">
-                    <span>할인 금액</span>
-                    <span id="discount-amount">0원</span>
-                </div>
-                
-                <div class="result-item final-amount">
-                    <span>최종 금액</span>
-                    <span id="final-amount">0원</span>
-                </div>
-
-                <div class="breakdown" id="breakdown">
-                    <h4>🔍 할인 내역</h4>
-                    <div class="breakdown-item">
-                        <span>적용된 할인이 없습니다</span>
-                        <span>-</span>
+            <div class="section">
+                <h3 style="color: #00b894;">💰 추가 할인</h3>
+                <div class="discount-options">
+                    <div class="discount-option" data-discount="family">
+                        <input type="checkbox" id="family">
+                        <label for="family">가족 할인 - 1인당 10,000원 할인</label>
+                    </div>
+                    <div class="discount-option" data-discount="referral">
+                        <input type="checkbox" id="referral">
+                        <label for="referral">지인 추천 할인 - 1인당 30,000원 할인 (첫달)</label>
+                    </div>
+                    <div class="discount-option" data-discount="quarterly">
+                        <input type="checkbox" id="quarterly">
+                        <label for="quarterly">3개월 일괄결제 할인 - 10% 추가 할인</label>
                     </div>
                 </div>
+            </div>
+
+            <div class="result fade-in" id="result" style="display: none;">
+                <h3>💸 최종 수강료</h3>
+                <div class="class-summary" id="classSummary"></div>
+                <div class="total-price" id="totalPrice">0원</div>
+                <div class="original-price" id="originalPrice"></div>
+                <div class="savings" id="savings"></div>
+            </div>
+
+            <div class="tip">
+                <strong>💡 할인 팁:</strong><br>
+                3개월 일괄결제 + 지인 추천을 함께 이용하면 최대 할인 혜택을 받을 수 있어요!
             </div>
         </div>
     </div>
 
     <script>
-        const courses = {
-            entrance: { price: 390000, count: 0 },
-            private: { price: 180000, count: 0 },
-            group: { price: 130000, count: 0 },
-            band: { price: 90000, count: 0 }
+        const classData = {
+            exam: { name: '입시반', price: 250000 },
+            private60: { name: '개인반(60분)', price: 230000 },
+            private30: { name: '개인반(30분)', price: 180000 },
+            group: { name: '그룹반', price: 120000 },
+            duet: { name: '듀엣/밴드반', price: 150000 }
         };
 
-        const discounts = {
-            family: 0,
-            referral: 0,
-            bulk: false
+        let classQuantities = {
+            exam: 0,
+            private60: 0,
+            private30: 0,
+            group: 0,
+            duet: 0
         };
 
-        function changeCourse(type, delta) {
-            courses[type].count = Math.max(0, courses[type].count + delta);
-            document.getElementById(type + '-count').textContent = courses[type].count;
-            calculateTotal();
-        }
+        let selectedDiscounts = [];
 
-        function changeDiscount(type, delta) {
-            discounts[type] = Math.max(0, discounts[type] + delta);
-            document.getElementById(type + '-count').textContent = discounts[type];
-            calculateTotal();
-        }
-
-        function toggleBulkPayment() {
-            discounts.bulk = !discounts.bulk;
-            const checkbox = document.getElementById('bulk-checkbox');
-            if (discounts.bulk) {
-                checkbox.classList.add('checked');
-                checkbox.textContent = '✓';
-            } else {
-                checkbox.classList.remove('checked');
-                checkbox.textContent = '';
+        function changeQuantity(classType, change) {
+            const newQuantity = classQuantities[classType] + change;
+            if (newQuantity >= 0) {
+                classQuantities[classType] = newQuantity;
+                document.getElementById(classType + '-quantity').textContent = newQuantity;
+                
+                // Update visual state
+                const option = document.querySelector(`[data-class="${classType}"]`);
+                if (newQuantity > 0) {
+                    option.classList.add('has-selection');
+                } else {
+                    option.classList.remove('has-selection');
+                }
+                
+                // Update minus button state
+                const minusBtn = option.querySelector('.quantity-btn');
+                minusBtn.disabled = newQuantity === 0;
+                
+                calculateTotal();
             }
-            calculateTotal();
+        }
+
+        // 할인 선택 이벤트
+        document.querySelectorAll('.discount-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                
+                if (checkbox.checked) {
+                    this.classList.add('selected');
+                } else {
+                    this.classList.remove('selected');
+                }
+                
+                updateSelectedDiscounts();
+                calculateTotal();
+            });
+        });
+
+        function updateSelectedDiscounts() {
+            selectedDiscounts = [];
+            document.querySelectorAll('.discount-option input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedDiscounts.push(checkbox.parentElement.dataset.discount);
+            });
         }
 
         function calculateTotal() {
-            // 총 수업 금액 계산
-            let originalAmount = 0;
-            let totalCourses = 0;
+            const resultDiv = document.getElementById('result');
+            const totalPriceDiv = document.getElementById('totalPrice');
+            const originalPriceDiv = document.getElementById('originalPrice');
+            const savingsDiv = document.getElementById('savings');
+            const classSummaryDiv = document.getElementById('classSummary');
             
-            Object.keys(courses).forEach(key => {
-                originalAmount += courses[key].price * courses[key].count;
-                totalCourses += courses[key].count;
-            });
+            // Check if any classes selected
+            const totalClasses = Object.values(classQuantities).reduce((sum, qty) => sum + qty, 0);
+            if (totalClasses === 0) {
+                resultDiv.style.display = 'none';
+                return;
+            }
 
-            let totalDiscount = 0;
-            let breakdownItems = [];
+            let originalPrice = 0;
+            let classDetails = [];
 
-            // 다과목 할인
-            if (totalCourses >= 2) {
-                let courseDiscountPercent = 0;
-                if (totalCourses === 2) {
-                    courseDiscountPercent = 15;
-                } else if (totalCourses >= 3) {
-                    courseDiscountPercent = 25;
-                }
-                
-                if (courseDiscountPercent > 0) {
-                    const courseDiscount = originalAmount * (courseDiscountPercent / 100);
-                    totalDiscount += courseDiscount;
-                    breakdownItems.push({
-                        text: `다과목 할인 (${totalCourses}과목 - ${courseDiscountPercent}%)`,
-                        amount: courseDiscount
+            // Calculate original price and create summary
+            Object.keys(classQuantities).forEach(classType => {
+                const quantity = classQuantities[classType];
+                if (quantity > 0) {
+                    const price = classData[classType].price;
+                    const subtotal = price * quantity;
+                    originalPrice += subtotal;
+                    
+                    classDetails.push({
+                        name: classData[classType].name,
+                        quantity: quantity,
+                        price: price,
+                        subtotal: subtotal
                     });
                 }
-            }
+            });
 
-            // 가족 할인
-            if (discounts.family > 0) {
-                const familyDiscount = discounts.family * 10000;
-                totalDiscount += familyDiscount;
-                breakdownItems.push({
-                    text: `가족 할인 (${discounts.family}인)`,
-                    amount: familyDiscount
-                });
-            }
+            // Create class summary
+            let summaryHTML = '<h4>📋 선택한 수업</h4>';
+            classDetails.forEach(detail => {
+                summaryHTML += `
+                    <div class="class-summary-item">
+                        <span>${detail.name} × ${detail.quantity}개월</span>
+                        <span>${detail.subtotal.toLocaleString()}원</span>
+                    </div>
+                `;
+            });
+            classSummaryDiv.innerHTML = summaryHTML;
 
-            // 지인 할인
-            if (discounts.referral > 0) {
-                const referralDiscount = discounts.referral * 30000;
-                totalDiscount += referralDiscount;
-                breakdownItems.push({
-                    text: `지인 추천 할인 (${discounts.referral}인)`,
-                    amount: referralDiscount
-                });
-            }
-
-            let finalAmount = originalAmount - totalDiscount;
-
-            // 3개월 일괄결제 할인 (최종 금액에서 10% 추가 할인)
-            if (discounts.bulk) {
-                const bulkDiscount = finalAmount * 0.1;
-                totalDiscount += bulkDiscount;
-                finalAmount -= bulkDiscount;
-                breakdownItems.push({
-                    text: '3개월 일괄결제 할인 (10%)',
-                    amount: bulkDiscount
-                });
-            }
-
-            // 화면 업데이트
-            document.getElementById('original-amount').textContent = formatCurrency(originalAmount);
-            document.getElementById('discount-amount').textContent = formatCurrency(totalDiscount);
-            document.getElementById('final-amount').textContent = formatCurrency(finalAmount);
-
-            // 할인 내역 업데이트
-            updateBreakdown(breakdownItems, totalDiscount);
-        }
-
-        function updateBreakdown(items, total) {
-            const breakdown = document.getElementById('breakdown');
-            let html = '<h4>🔍 할인 내역</h4>';
+            let finalPrice = originalPrice;
+            let totalSavings = 0;
             
-            if (items.length === 0) {
-                html += '<div class="breakdown-item"><span>적용된 할인이 없습니다</span><span>-</span></div>';
+            // Apply discounts
+            selectedDiscounts.forEach(discount => {
+                switch(discount) {
+                    case 'family':
+                        totalSavings += 10000 * totalClasses;
+                        break;
+                    case 'referral':
+                        totalSavings += 30000 * totalClasses;
+                        break;
+                }
+            });
+            
+            finalPrice -= totalSavings;
+            
+            // Apply quarterly discount last
+            let isQuarterly = selectedDiscounts.includes('quarterly');
+            if (isQuarterly) {
+                const quarterlyDiscount = Math.floor(finalPrice * 0.1);
+                finalPrice = Math.floor(finalPrice * 0.9);
+                totalSavings += quarterlyDiscount;
+            }
+            
+            // Display results
+            let resultHTML = '';
+            
+            if (isQuarterly) {
+                const quarterlyTotal = finalPrice * 3;
+                resultHTML = `
+                    <div class="quarterly-notice">📅 3개월 일괄결제 금액</div>
+                    <div class="monthly-price">월 ${finalPrice.toLocaleString()}원 × 3개월</div>
+                    <div class="total-price">${quarterlyTotal.toLocaleString()}원</div>
+                `;
             } else {
-                items.forEach(item => {
-                    html += `<div class="breakdown-item"><span>${item.text}</span><span>-${formatCurrency(item.amount)}</span></div>`;
-                });
-                html += `<div class="breakdown-item breakdown-total"><span><strong>총 할인</strong></span><span><strong>-${formatCurrency(total)}</strong></span></div>`;
+                resultHTML = `<div class="total-price">${finalPrice.toLocaleString()}원</div>`;
             }
             
-            breakdown.innerHTML = html;
+            totalPriceDiv.innerHTML = resultHTML;
+            
+            if (totalSavings > 0) {
+                originalPriceDiv.textContent = `원가: ${originalPrice.toLocaleString()}원`;
+                savingsDiv.textContent = `💰 ${totalSavings.toLocaleString()}원 절약!`;
+                originalPriceDiv.style.display = 'block';
+                savingsDiv.style.display = 'block';
+            } else {
+                originalPriceDiv.style.display = 'none';
+                savingsDiv.style.display = 'none';
+            }
+            
+            resultDiv.style.display = 'block';
         }
 
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('ko-KR').format(Math.round(amount)) + '원';
-        }
+        // 체크박스 직접 클릭 시에도 동작하도록
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function(e) {
+                e.stopPropagation();
+                const option = this.parentElement;
+                
+                if (this.checked) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+                
+                updateSelectedDiscounts();
+                calculateTotal();
+            });
+        });
 
-        // 초기 계산
-        calculateTotal();
+        // Initialize minus buttons as disabled
+        document.querySelectorAll('.quantity-btn').forEach((btn, index) => {
+            if (index % 2 === 0) { // minus buttons
+                btn.disabled = true;
+            }
+        });
     </script>
 </body>
 </html>
